@@ -1,3 +1,4 @@
+import { Question } from './question'
 import './styles.css'
 import { isValid } from './utils'
 
@@ -6,7 +7,9 @@ const input = form.querySelector('#question-input')
 const submitBtn = form.querySelector('#submit')
 
 form.addEventListener('submit', submitFormHandler)
-input.addEventListener()
+input.addEventListener('input', () => {
+    submitBtn.disabled = !isValid(input.value)
+})
 
 function submitFormHandler(event) {
     event.preventDefault()
@@ -20,9 +23,10 @@ function submitFormHandler(event) {
         submitBtn.disabled = true
 
         // Async request to server to save question
-
-        input.value = ''
-        input.className = ''
-        submitBtn.disabled = false
+        Question.create(question).then(() => {
+            input.value = ''
+            input.className = ''
+            submitBtn.disabled = false
+        })
     }
 }
