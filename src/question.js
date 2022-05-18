@@ -38,6 +38,13 @@ function getQuestionsFromLocalStorage() {
   return JSON.parse(localStorage.getItem('question') || '[]')
 }
 
-function toCard() {
-  return '11'
+function toCard(question) {
+  return `
+    <div class="mui--text-black-54">
+    ${new Date(question.date).toLocaleDateString()}
+    ${new Date(question.date).toLocaleTimeString()}
+    </div>
+    <div>${question.text}</div>
+    <br>
+  `
 }
