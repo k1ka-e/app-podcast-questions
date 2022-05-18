@@ -13,9 +13,31 @@ export class Question {
           return question
       })
       .then(addToLocalStorage)
+      .then(Question.renderList)
+  }
+  static renderList() {
+    const questions = getQuestionsFromLocalStorage()
+
+    const html = questions.length
+      ? questions.map(toCard).join('')
+      : `<div class="mui--text-headline">Вы пока ничего не спрашивали</div>`
+  
+      const list = document.getElementById('list')
+
+      list.innerHTML = html
   }
 }
 
 function addToLocalStorage(question) {
-  localStorage.setItem('question', JSON.stringify(question))
+  const all = getQuestionsFromLocalStorage()
+  all.push(question)
+  localStorage.setItem('question', JSON.stringify(all))
+}
+
+function getQuestionsFromLocalStorage() {
+  return JSON.parse(localStorage.getItem('question') || '[]')
+}
+
+function toCard() {
+  return '11'
 }
