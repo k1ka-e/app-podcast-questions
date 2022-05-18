@@ -1,5 +1,6 @@
 import { Question } from './question'
 import { createModal, isValid } from './utils'
+import { authWithEmailAndPassword, getAuthForm } from './auth'
 import './styles.css'
 
 const form = document.getElementById('form')
@@ -34,5 +35,30 @@ function submitFormHandler(event) {
 }
 
 function openModal() {
-  createModal('Авторизация', '<h1>Test</h1>')
+  createModal('Авторизация', getAuthForm())
+  document
+  .getElementById('auth-form')
+  .addEventListener('submit', authFormHeandler, {once: true})
+}
+
+function authFormHeandler(event) {
+    event.preventDefault()
+
+    const btn = event.target.querySelector('button')
+    const email = event.target.querySelector('#email').value
+    const password = event.target.querySelector('#password').value
+
+    btn.disabled = true
+    authWithEmailAndPassword(email, password)
+    .then(Question.fetch)
+    .then(rendorModalAfterAuth)
+    .then( () => btn.disabled = false)
+}
+
+function rendorModalAfterAuth(content) {
+    if (typeof content === 'string') {
+        createModal('Ошибка!', content)
+    } else {
+        createModal('Список вопросов', Question.listToHTML(content))
+    }
 }
