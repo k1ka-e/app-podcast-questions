@@ -1,6 +1,6 @@
 export class Question {
   static create(question) {
-      fetch('https://podcast-app-b41af-default-rtdb.firebaseio.com/questions.json', {
+      return fetch('https://podcast-app-b41af-default-rtdb.firebaseio.com/questions.json', {
         method: 'POST',
         body: JSON.stringify(question),
         headers: {
